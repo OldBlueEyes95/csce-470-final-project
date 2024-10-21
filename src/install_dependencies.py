@@ -6,14 +6,16 @@ required_packages = [
     'pandas',
     'bs4',
     'nltk',
-    'requests'
+    'requests',
+    'lxml'
 ]
 
-def install(package):
+def install(package: str) -> None:
     '''Install a package using pip.'''
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
 
-def ensure_dependencies_installed():
+
+def ensure_dependencies_installed() -> None:
     '''Check and install missing dependencies.'''
     for package in required_packages:
         try:
@@ -21,7 +23,7 @@ def ensure_dependencies_installed():
         except ImportError:
             print(f'{package} not found, installing...')
             install(package)
-
+    
     # For 'nltk', ensure stopwords are downloaded
     try:
         import nltk
@@ -29,6 +31,7 @@ def ensure_dependencies_installed():
     except (ImportError, LookupError):
         print('Downloading NLTK stopwords...')
         nltk.download('stopwords')
+
 
 if __name__ == '__main__':
     ensure_dependencies_installed()
