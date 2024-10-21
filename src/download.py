@@ -9,19 +9,25 @@ export_url = "https://minecraft.wiki/w/Special:Export"
 def download_pages():
     
     # GET the pages and their titles.
-    params = {
-        "action": "query",
-        "list": "categorymembers",
-        "cmtitle": "Category:Items",
-        "cmlimit": "max",
-        "format": "json"
-    }
-    response = requests.get(api_url, params=params)
-    data = response.json()
-    pages = data['query']['categorymembers']
-    titles = [page['title'] for page in pages]
+    categories = [
+        'Trading', 'Brewing', 'Enchanting', 'Mobs', 'Blocks', 'Items', 'Biomes', 'Effects', 
+        'Crafting', 'Smelting', 'Smithing', 'Structures', 'Redstone', 'Archaeology', 'History', 'Tutorials'
+    ]
+    titles = []
+    for category in categories:
+        params = {
+            "action": "query",
+            "list": "categorymembers",
+            "cmtitle": f"Category:{category}",
+            "cmlimit": "max",
+            "format": "json"
+        }
+        response = requests.get(api_url, params=params)
+        data = response.json()
+        pages = data['query']['categorymembers']
+        titles.extend([page['title'] for page in pages])
         
-    # Export pages
+    # Export all the pages
     response = requests.post(export_url, data={
         "pages": "\n".join(titles),
         "curonly": 1  # Only current version
