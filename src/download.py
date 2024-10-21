@@ -8,7 +8,7 @@ export_url = "https://minecraft.wiki/w/Special:Export"
 
 def download_pages():
     
-    # GET the pages and thier titles.
+    # GET the pages and their titles.
     params = {
         "action": "query",
         "list": "categorymembers",
