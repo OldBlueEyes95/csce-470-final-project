@@ -7,7 +7,8 @@ required_packages = [
     'bs4',
     'nltk',
     'requests',
-    'lxml'
+    'lxml',
+    'matplotlib'
 ]
 
 def install(package: str) -> None:
