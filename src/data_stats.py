@@ -49,14 +49,15 @@ def top_terms_histogram(title_frame: pd.DataFrame, body_frame: pd.DataFrame) -> 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
     
     ax1.bar(title_top_5.index, title_top_5.values, color='blue')
-    ax1.set_title('Top 5 Common Words in Title')
-    ax1.set_xlabel('Words')
-    ax1.set_ylabel('Frequency')
+    ax1.set_title('Top 5 Common Words in Title', fontsize=16)
+    ax1.set_xlabel('Words', fontsize=14)
+    ax1.set_ylabel('Frequency', fontsize=14)
+    ax1.tick_params(axis='both', which='major', labelsize=14)
     
     ax2.bar(body_top_5.index, body_top_5.values, color='green')
-    ax2.set_title('Top 5 Common Words in Body')
-    ax2.set_xlabel('Words')
-    ax2.set_ylabel('Frequency')
+    ax2.set_title('Top 5 Common Words in Body', fontsize=16)
+    ax2.set_xlabel('Words', fontsize=14)
+    ax2.tick_params(axis='both', which='major', labelsize=14)
     
     plt.tight_layout()
     plt.savefig('stats/top_words_histogram.png')
@@ -66,17 +67,16 @@ def doc_length_chart(body_frame: pd.DataFrame) -> None:
     body_doc_lengths = body_frame.sum(axis=1)
     median_length = body_doc_lengths.median()
     
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(7, 4))
     ax.hist(body_doc_lengths, bins=100, color='green', alpha=0.7)
     
-    ax.axvline(median_length, color='red', label=f'Median: {median_length:.2f}')
-    ax.set_title('Document Lengths')
-    ax.set_xlabel('Length')
-    ax.set_ylabel('Frequency')
-    ax.legend()
+    ax.axvline(median_length, color='red', linestyle='dashed', linewidth=2, label=f'Median: {median_length:.2f}')
+    ax.set_title('Document Lengths', fontsize=16)
+    ax.set_xlabel('Length', fontsize=14)
+    ax.set_ylabel('Frequency', fontsize=14)
     
-    plt.tight_layout()
-    plt.savefig('stats/doc_length_histogram.png')
+    ax.legend(fontsize=12)
+    ax.tick_params(axis='both', which='major', labelsize=14)
 
 
 if __name__ == "__main__":
