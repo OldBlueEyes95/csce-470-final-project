@@ -8,6 +8,10 @@ STATS_FILE: str = "stats/basic_stats.txt"
 def main() -> None:
     title_frame, body_frame = retrieve_data()
     
+    number_of_files = len(title_frame.axes[0])
+    
+    print(number_of_files)
+    
     title_common_words: List[str, float] = [
         (field, title_frame[field].sum())
         for field in title_frame.columns
