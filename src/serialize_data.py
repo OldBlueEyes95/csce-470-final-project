@@ -64,5 +64,4 @@ def retrieve_tf_idf_data() -> Dict[str, pd.DataFrame]:
 def retrieve_avg_lengths() -> Dict[str, float]:
     with open(AVG_LEN_PATH, "r") as f:
         avg_lengths_data_frames = json.load(f)
-    print(f"Average lengths loaded from {AVG_LEN_PATH}")
     return avg_lengths_data_frames
