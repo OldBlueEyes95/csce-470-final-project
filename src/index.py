@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from collections import Counter
 from bs4 import BeautifulSoup
@@ -5,7 +6,7 @@ import re
 from nltk.corpus import stopwords
 from typing import Tuple, Set, List
 
-from serialize_data import store_data
+from serialize_data import store_tf_data, store_tf_idf_data
 
 STOP_WORDS: Set[str] = set(stopwords.words('english'))
 
@@ -42,6 +43,8 @@ def generate_tf_vectors(xml_file_path: str) -> Tuple[pd.DataFrame, pd.DataFrame]
         body_tf = Counter(body_tokens)
         all_title_tf.append(title_tf)
         all_body_tf.append(body_tf)
+        
+    print(page_titles)
     
     # Make the matrix with all unique terms for column headers.
     unique_title_terms = set()
@@ -68,12 +71,37 @@ def generate_tf_vectors(xml_file_path: str) -> Tuple[pd.DataFrame, pd.DataFrame]
     return (title_tf_matrix, body_tf_matrix)
 
 
+def calculate_tf_idf_matrices(title_tf_matrix: pd.DataFrame, body_tf_matrix: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def calculate_idf(tf_matrix: pd.DataFrame) -> pd.Series:
+        N = len(tf_matrix)
+        document_frequency = (tf_matrix > 0).sum(axis=0)
+        idf = np.log((N + 1) / (document_frequency + 1)) + 1
+        return idf
+
+    # Calculate IDF for both title and body terms
+    title_idf = calculate_idf(title_tf_matrix)
+    body_idf = calculate_idf(body_tf_matrix)
+
+    # Multiply each term's TF by its IDF to get the TF-IDF
+    title_tf_idf_matrix = title_tf_matrix * title_idf
+    body_tf_idf_matrix = body_tf_matrix * body_idf
+    
+    print(title_tf_idf_matrix["wolf"].sort_values(ascending=False))
+    # print(title_tf_idf_matrix["wolf"]["Wolf"])
+
+    return title_tf_idf_matrix, body_tf_idf_matrix
+
+
+
 def main() -> None:
     xml_file_path = "data/pages_export.xml"
     
     title_tf_matrix, body_tf_matrix = generate_tf_vectors(xml_file_path)
-    store_data(title_tf_matrix, body_tf_matrix)
+    title_tf_idf_matrix, body_tf_idf_matrix = calculate_tf_idf_matrices(title_tf_matrix, body_tf_matrix)
+    store_tf_data({"title": title_tf_idf_matrix, "body": body_tf_idf_matrix})
+    store_tf_idf_data({"title": title_tf_idf_matrix, "body": body_tf_idf_matrix})
 
 
 if __name__ == "__main__":
     main()
+    
