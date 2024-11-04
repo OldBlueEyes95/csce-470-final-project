@@ -23,7 +23,16 @@ def download_pages() -> None:
             "format": "json"
         }
         response = requests.get(api_url, params=params)
-        data = response.json()
+        if response.status_code == 200 and response.text.strip():
+            try:
+                data = response.json()
+            except ValueError:
+                print("Error: Response is not JSON.")
+                print(response.text)  # Print the response to debug
+                return
+        else:
+            print(f"Failed to fetch data for category {category}. Status code: {response.status_code}")
+            return
         pages = data['query']['categorymembers']
         titles.extend([page['title'] for page in pages])
     

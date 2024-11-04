@@ -2,12 +2,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from typing import List, Tuple
 
-from serialize_data import retrieve_data
+from serialize_data import retrieve_tf_data
 
 STATS_FILE: str = "stats/basic_stats.txt"
 
 def main() -> None:
-    title_frame, body_frame = retrieve_data()
+    tf_fields_dict = retrieve_tf_data()
+    title_frame = tf_fields_dict["title"]
+    body_frame = tf_fields_dict["body"]
     top_terms_histogram(title_frame, body_frame)
     doc_length_chart(body_frame)
     

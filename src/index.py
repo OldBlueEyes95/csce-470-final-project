@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from collections import Counter
 from bs4 import BeautifulSoup
@@ -5,7 +6,7 @@ import re
 from nltk.corpus import stopwords
 from typing import Tuple, Set, List
 
-from serialize_data import store_data
+from serialize_data import store_tf_data, store_tf_idf_data, store_avg_lengths
 
 STOP_WORDS: Set[str] = set(stopwords.words('english'))
 
@@ -42,6 +43,8 @@ def generate_tf_vectors(xml_file_path: str) -> Tuple[pd.DataFrame, pd.DataFrame]
         body_tf = Counter(body_tokens)
         all_title_tf.append(title_tf)
         all_body_tf.append(body_tf)
+        
+    print(page_titles)
     
     # Make the matrix with all unique terms for column headers.
     unique_title_terms = set()
@@ -68,12 +71,48 @@ def generate_tf_vectors(xml_file_path: str) -> Tuple[pd.DataFrame, pd.DataFrame]
     return (title_tf_matrix, body_tf_matrix)
 
 
+def calculate_tf_idf_matrices(title_tf_matrix: pd.DataFrame, body_tf_matrix: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def calculate_idf(tf_matrix: pd.DataFrame) -> pd.Series:
+        N = len(tf_matrix)
+        document_frequency = (tf_matrix > 0).sum(axis=0)
+        idf = np.log((N + 1) / (document_frequency + 1)) + 1
+        return idf
+
+    title_idf = calculate_idf(title_tf_matrix)
+    title_tf_idf_matrix = title_tf_matrix * title_idf
+    
+    body_idf = calculate_idf(body_tf_matrix)
+    body_tf_idf_matrix = body_tf_matrix * body_idf
+
+    # print(title_tf_idf_matrix["wolf"].sort_values(ascending=False))
+    # print(title_tf_idf_matrix["wolf"]["Wolf"]) # Note: There is not wolf doc at the moment.
+    
+    return title_tf_idf_matrix, body_tf_idf_matrix
+
+
+def calculate_average_lengths(title_tf_matrix: pd.DataFrame, body_tf_matrix: pd.DataFrame) -> Tuple[float, float]:
+    # Calculate total length for each document by summing the term frequencies
+    total_title_length = title_tf_matrix.sum(axis=1).sum()
+    total_body_length = body_tf_matrix.sum(axis=1).sum()
+
+    # Calculate the average length by dividing total length by the number of documents
+    avg_title_length = total_title_length / len(title_tf_matrix)
+    avg_body_length = total_body_length / len(body_tf_matrix)
+
+    return avg_title_length, avg_body_length
+
+
 def main() -> None:
     xml_file_path = "data/pages_export.xml"
     
     title_tf_matrix, body_tf_matrix = generate_tf_vectors(xml_file_path)
-    store_data(title_tf_matrix, body_tf_matrix)
+    title_tf_idf_matrix, body_tf_idf_matrix = calculate_tf_idf_matrices(title_tf_matrix, body_tf_matrix)
+    title_len, body_len = calculate_average_lengths(title_tf_matrix, body_tf_matrix)
+    store_tf_data({"title": title_tf_idf_matrix, "body": body_tf_idf_matrix})
+    store_tf_idf_data({"title": title_tf_idf_matrix, "body": body_tf_idf_matrix})
+    store_avg_lengths({"title": title_len, "body": body_len})
 
 
 if __name__ == "__main__":
     main()
+    
