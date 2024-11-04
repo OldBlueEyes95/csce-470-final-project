@@ -1,3 +1,4 @@
 *.xml
 data
 stats
+__pycache__
