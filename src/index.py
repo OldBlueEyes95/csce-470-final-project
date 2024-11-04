@@ -6,7 +6,7 @@ import re
 from nltk.corpus import stopwords
 from typing import Tuple, Set, List
 
-from serialize_data import store_tf_data, store_tf_idf_data
+from serialize_data import store_tf_data, store_tf_idf_data, store_avg_lengths
 
 STOP_WORDS: Set[str] = set(stopwords.words('english'))
 
@@ -78,19 +78,28 @@ def calculate_tf_idf_matrices(title_tf_matrix: pd.DataFrame, body_tf_matrix: pd.
         idf = np.log((N + 1) / (document_frequency + 1)) + 1
         return idf
 
-    # Calculate IDF for both title and body terms
     title_idf = calculate_idf(title_tf_matrix)
-    body_idf = calculate_idf(body_tf_matrix)
-
-    # Multiply each term's TF by its IDF to get the TF-IDF
     title_tf_idf_matrix = title_tf_matrix * title_idf
-    body_tf_idf_matrix = body_tf_matrix * body_idf
     
-    print(title_tf_idf_matrix["wolf"].sort_values(ascending=False))
-    # print(title_tf_idf_matrix["wolf"]["Wolf"])
+    body_idf = calculate_idf(body_tf_matrix)
+    body_tf_idf_matrix = body_tf_matrix * body_idf
 
+    # print(title_tf_idf_matrix["wolf"].sort_values(ascending=False))
+    # print(title_tf_idf_matrix["wolf"]["Wolf"]) # Note: There is not wolf doc at the moment.
+    
     return title_tf_idf_matrix, body_tf_idf_matrix
 
+
+def calculate_average_lengths(title_tf_matrix: pd.DataFrame, body_tf_matrix: pd.DataFrame) -> Tuple[float, float]:
+    # Calculate total length for each document by summing the term frequencies
+    total_title_length = title_tf_matrix.sum(axis=1).sum()
+    total_body_length = body_tf_matrix.sum(axis=1).sum()
+
+    # Calculate the average length by dividing total length by the number of documents
+    avg_title_length = total_title_length / len(title_tf_matrix)
+    avg_body_length = total_body_length / len(body_tf_matrix)
+
+    return avg_title_length, avg_body_length
 
 
 def main() -> None:
@@ -98,8 +107,10 @@ def main() -> None:
     
     title_tf_matrix, body_tf_matrix = generate_tf_vectors(xml_file_path)
     title_tf_idf_matrix, body_tf_idf_matrix = calculate_tf_idf_matrices(title_tf_matrix, body_tf_matrix)
+    title_len, body_len = calculate_average_lengths(title_tf_matrix, body_tf_matrix)
     store_tf_data({"title": title_tf_idf_matrix, "body": body_tf_idf_matrix})
     store_tf_idf_data({"title": title_tf_idf_matrix, "body": body_tf_idf_matrix})
+    store_avg_lengths({"title": title_len, "body": body_len})
 
 
 if __name__ == "__main__":
