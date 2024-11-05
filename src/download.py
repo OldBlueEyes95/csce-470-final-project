@@ -2,7 +2,7 @@ import requests
 import os
 
 output_dir = 'data'
-filename = 'pages_export_from_drive.xml'
+filename = 'pages_export.xml'
 
 def download_pages() -> None:
     
