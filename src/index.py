@@ -11,8 +11,8 @@ from serialize_data import store_tf_data, store_tf_idf_data, store_avg_lengths
 STOP_WORDS: Set[str] = set(stopwords.words('english'))
 
 
-def tokenize(text: str) -> List:
-    tokens = re.findall(r'\b\w+\b', text.lower())
+def tokenize(text: str) -> List[str]:
+    tokens = re.findall(r'\b\w+\b|[^\w\s/:\_]+', re.sub(r'[/:\_]', ' ', text.lower()))
     filtered_tokens = [
         token for token in tokens 
         if token not in STOP_WORDS
