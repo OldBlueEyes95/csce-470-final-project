@@ -5,7 +5,7 @@ output_dir = 'data'
 filename = 'pages_export.xml'
 
 def download_pages() -> None:
-    
+    """Acquires the Minecraft Wiki XML document from our stable copy on Google Drive."""
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
@@ -24,6 +24,6 @@ def download_pages() -> None:
     else:
         print(f'Download request failed: {response.status_code}')
 
+
 if __name__ == '__main__':
     download_pages()
-    
