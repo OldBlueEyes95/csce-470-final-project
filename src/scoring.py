@@ -7,22 +7,13 @@ from index import tokenize
 from serialize_data import retrieve_tf_data, retrieve_tf_idf_data, retrieve_avg_lengths, FIELDS
 
 
-field_tf_frames: dict[str, pd.DataFrame]
+field_tf_frames:   dict[str, pd.DataFrame]
 field_avg_lengths: dict[str, float]
-document_titles: list[str]
+document_titles:   list[str]
 
-weight_w = {
-    'title': .3,
-    'body': .7
-}
 
-weight_b = {
-    'title': 0.72,
-    'body': 0.7
-}
-
-k1: float = 1.0
-pageRankLambda: float = 0.9
+k1:                  float = 1.0
+pageRankLambda:      float = 0.9
 pageRankLambdaPrime: float = 2.0
 
 
@@ -34,13 +25,22 @@ def calculate_idf_for_term(term: str, tf_matrix: pd.DataFrame) -> float:
     return idf
 
 
-def score_document(query_terms: List[str], document_id: str) -> float:
+def score_document(
+    query_terms: List[str], 
+    document_id: str,
+    w_title=0.30, w_body=0.70,
+    b_title=0.72, b_body=0.70
+) -> float:
     """
     Score a document for relevance to the query using BM25.
     :param query_terms: List of terms in the query.
     :param document_id: ID of the document to score.
     :return: BM25 score for the document.
     """
+    
+    weight_w = {'title': w_title, 'body': w_body}
+    weight_b = {'title': b_title, 'body': b_body}
+    
     score: float = 0.0
     for t in query_terms:
         idf: float = calculate_idf_for_term(t, field_tf_frames['body'])
@@ -59,7 +59,11 @@ def score_document(query_terms: List[str], document_id: str) -> float:
     return score
 
 
-def rank_documents(query: str) -> List[Tuple[str, float]]:
+def rank_documents(
+    query: str,
+    w_title=0.30, w_body=0.70,
+    b_title=0.72, b_body=0.70
+) -> List[Tuple[str, float]]:
     """
     Rank all documents based on their relevance to the query.
     
@@ -70,15 +74,16 @@ def rank_documents(query: str) -> List[Tuple[str, float]]:
     query_terms = tokenize(query)
     
     # score for each document
-    document_scores: List[Tuple[str, float]] = [
-        (doc_id, score_document(query_terms, doc_id))
+    document_scores = [
+        (
+            doc_id, 
+            score_document(query_terms, doc_id, w_title=w_title, w_body=w_body, b_title=b_title, b_body=b_body)
+        )
         for doc_id in document_titles
     ]
     
     # descending order sort
-    ranked_documents = sorted(document_scores, key=lambda x: x[1], reverse=True)
-    
-    return ranked_documents
+    return sorted(document_scores, key=lambda x: x[1], reverse=True)
 
 
 def load_data() -> None:
@@ -86,9 +91,9 @@ def load_data() -> None:
     global field_avg_lengths
     global document_titles
     
-    field_tf_frames = retrieve_tf_data()
+    field_tf_frames   = retrieve_tf_data()
     field_avg_lengths = retrieve_avg_lengths()
-    document_titles = list(field_tf_frames['title'].index)
+    document_titles   = list(field_tf_frames['title'].index)
 
 
 def main() -> None:
