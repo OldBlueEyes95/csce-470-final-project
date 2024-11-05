@@ -51,11 +51,49 @@ def parse_csv_to_dict(file_path: str) -> Tuple[Dict[str, Dict[str, float]], Dict
     return query_scores, cirrus_ranking
 
 
+def test() -> None:
+    eval_query_data, cirrus_ranking = parse_csv_to_dict("eval_data/Training - Sheet2.csv")
+    
+    their_scores: Dict[str, List[float]] = {
+        query: [eval_query_data[query].get(doc, 0) for doc in cirrus_ranking[query][:K]] for query in eval_query_data.keys()
+    }
+    their_NDCGs: float = [NDCG(scores) for scores in their_scores.values()]
+    their_avg_NDCG: float = sum(their_NDCGs)/len(their_NDCGs)
+    their_MAP: float = mean_average_precision_at_k(their_scores.values(), k=K)
+    
+    our_scores: Dict[str, List[float]] = {
+        query: [
+            eval_query_data[query].get(doc, 0) 
+            for doc, _ in rank_documents(query)[:K]
+        ]
+        for query in eval_query_data.keys()
+    }
+    our_NDCGs:    float = [NDCG(scores) for scores in our_scores.values()]
+    our_avg_NDCG: float = sum(our_NDCGs)/len(our_NDCGs)
+    our_MAP:      float = mean_average_precision_at_k(our_scores.values(), k=K)
+    
+    
+    print("\n=== EVALUATION METRICS ===\n")
+    
+    print("NDCG (averaged across each test query):\n")
+    print(f"Cirrus Search (Minecraft Wiki): `{their_avg_NDCG}`.")
+    print(f"Query Crafter (our tool):       `{our_avg_NDCG}`.")
+    
+    print("\n---\n")
+    
+    print("MAP:\n")
+    print(f"Cirrus Search (Minecraft Wiki): `{their_MAP}`.")
+    print(f"Query Crafter (our tool):       `{  our_MAP}`.")
+    
+    print()
+
+
 def evaluate(
     w_title=0.30, w_body=0.70,
     b_title=0.72, b_body=0.70,
     step_width: float = 0.05,
     step_count: int = 10,
+    step_centering: int = 0,
     show_each_step: bool = False
 ) -> Tuple[float, float]:
     """Function for testing different weight combinations."""
@@ -75,7 +113,7 @@ def evaluate(
     our_best_NDCG: float = -float("inf")
     our_best_MAP:  float = -float("inf")
     
-    for step in range(-step_count, step_count):
+    for step in range(-step_count + step_centering, step_count + step_centering):
         difference = step * step_width
         
         print(f"\nFor difference of {difference}...\n")
@@ -139,21 +177,6 @@ def evaluate(
         print("Varying the difference over `b_body`...")
         print(f"Query Crafter (our tool) NDCG: `{our_avg_NDCG}`.")
         print(f"Query Crafter (our tool) MAP:  `{  our_MAP}`.")
-    
-    if show_each_step:
-        print("\n=== EVALUATION METRICS ===\n")
-        
-        print("NDCG (averaged across each test query):\n")
-        print(f"Cirrus Search (Minecraft Wiki): `{their_avg_NDCG}`.")
-        print(f"Query Crafter (our tool):       `{our_avg_NDCG}`.")
-        
-        print("\n---\n")
-        
-        print("MAP:\n")
-        print(f"Cirrus Search (Minecraft Wiki): `{their_MAP}`.")
-        print(f"Query Crafter (our tool):       `{  our_MAP}`.")
-        
-        print()
     
     return None, None
 
