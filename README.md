@@ -11,4 +11,4 @@ To try the project for yourself, you can use `download.py` to import an XML file
 3. `python simple_searcher.py`
 
 We have some an evaluation module that uses NDCG and MAP to evaluate performance using a set of test queries.
-1. `python evaluate.py`
+1. `python evaluation.py`
