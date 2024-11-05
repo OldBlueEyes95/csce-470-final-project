@@ -46,6 +46,7 @@ def generate_tf_vectors(xml_file_path: str) -> Tuple[pd.DataFrame, pd.DataFrame]
         
     print(page_titles)
     
+    # TODO these two for loops can be optimized
     # Make the matrix with all unique terms for column headers.
     unique_title_terms = set()
     for tf_row in all_title_tf:
