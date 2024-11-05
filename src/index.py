@@ -28,22 +28,23 @@ def generate_tf_vectors(xml_file_path: str) -> Tuple[pd.DataFrame, pd.DataFrame]
         soup = BeautifulSoup(file, 'lxml')
     
     pages = soup.find_all('page')
-    all_body_tf = []
+    all_body_tf  = []
     all_title_tf = []
-    page_titles = []
+    page_titles  = []
     
     for page in pages:
         title = page.find('title').text
-        text = page.find('text').text if page.find('text') else ""
+        text  = page.find('text').text if page.find('text') else ""
         page_titles.append(title)
         
         title_tokens = tokenize(title)
-        body_tokens = tokenize(text)
-        title_tf = Counter(title_tokens)
-        body_tf = Counter(body_tokens)
+        body_tokens  = tokenize(text)
+        title_tf     = Counter(title_tokens)
+        body_tf      = Counter(body_tokens)
+        
         all_title_tf.append(title_tf)
         all_body_tf.append(body_tf)
-        
+    
     print(page_titles)
     
     # TODO these two for loops can be optimized

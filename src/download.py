@@ -18,8 +18,9 @@ def download_pages() -> None:
     if response.status_code == 200:
         with open(f'{output_dir}/{filename}', 'wb') as file:
             for chunk in response.iter_content(chunk_size=8192):
-                if chunk:  # filter out keep-alive chunks
+                if chunk: # filter out keep-alive chunks
                     file.write(chunk)
+        
         print(f'Downloaded to {output_dir}/{filename}')
     else:
         print(f'Download request failed: {response.status_code}')
