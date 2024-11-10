@@ -8,7 +8,7 @@ function Landing() {
     <Box 
       mt='25vh' mb='6vh'
     >
-      <Typography variant="h4" fullWidth gutterBottom mb='3vh'>
+      <Typography variant="h4" gutterBottom mb='3vh'>
         Crafter Engine
       </Typography>
       <SearchBar initialQuery=''/>
