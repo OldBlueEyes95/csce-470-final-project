@@ -1,17 +1,42 @@
-import React from 'react';
-import { Typography, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, Box, IconButton, OutlinedInput, FormControl } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 function Landing() {
+  const [query, setQuery] = useState('')
+  const queryDestLink = `/search?query=${query}`
+
   return (
     <Box 
-      sx={{ mt: 4, mb: 4, height: '100px' }}
+      sx={{ mt: '25vh', mb: 4}}
     >
-      <Typography variant="h4" gutterBottom>
-        Landing Page
+      <Typography variant="h4" fullWidth gutterBottom>
+        Crafter Engine
       </Typography>
-      <Typography variant="body1">
-        This is the landing page. Add your search bar and components here.
-      </Typography>
+      <Box display="flex" flexDirection="row" alignItems="center" mt='3vh' gap={2}>
+        <FormControl fullWidth variant="outlined">
+          <OutlinedInput fullWidth
+            id="search-box"
+            variant="outlined"
+            value={query}
+            onChange={event => {
+              setQuery(event.target.value);
+            }}
+            onKeyUp={(event) => {
+              if (event.key === 'Enter') {
+                window.location.href = queryDestLink;
+              }
+            }}
+          />
+        </FormControl>
+        <IconButton 
+          variant="contained" 
+          color="primary" 
+          href={queryDestLink}
+        >
+          <SearchIcon />
+        </IconButton>
+      </Box>
     </Box>
   );
 }
