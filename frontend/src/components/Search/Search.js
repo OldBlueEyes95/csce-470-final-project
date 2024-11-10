@@ -3,22 +3,36 @@ import { Typography, Box } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import Hit from '../Hit/Hit';
 import SearchBar from '../SearchBar/SearchBar';
+import { fetchSearchResults } from '../../api/Interface/searchApi';
 
 function Search() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query');
   const [hits, setHits] = useState([]);
+  const [noHitMessage, setNoHitMessage] = useState('Loading...')
 
-  useEffect(() => {
-    // Simulate a data fetching or creation process for `hits`
-    if (query) {
-      // Replace this logic with an actual data fetching or processing function
-      const simulatedHits = Array.from({ length: query.length }, (_, index) => (
-        <Hit key={index} title={`Hit ${index + 1}`} text={`Hit ${index + 1} for query: ${query}`} link={`https://minecraft.wiki/`} />
-      ));
-      setHits(simulatedHits);
-    }
-  }, [query]);
+    useEffect(() => {
+      if (!query) {
+        console.log('No query parameter found')
+      }
+      fetchSearchResults(query)
+        .then((results) => {
+          // Map the results to Hit components
+          const hitComponents = results.map((result, index) => (
+            <Hit
+              key={index}
+              title={result.title}
+              text={result.text}
+              link={result.link}
+            />
+          ));
+          setHits(hitComponents);
+        })
+        .catch((err) => {
+          setNoHitMessage('Error fetching results:')
+          console.error('Error fetching results:', err);
+        });
+    }, [query]);
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -35,7 +49,7 @@ function Search() {
             {hit}
           </Box>
         )) : (
-          <Typography>No results found.</Typography>
+          <Typography>{noHitMessage}</Typography>
         )}
       </Box>
     </Box>
