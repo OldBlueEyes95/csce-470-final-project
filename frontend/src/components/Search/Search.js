@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, CircularProgress } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import Hit from '../Hit/Hit';
 import SearchBar from '../SearchBar/SearchBar';
-import { fetchSearchResults } from '../../api/Interface/searchApi';
+import { fetchSearchResults } from '../../api/searchApi';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 function Search() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query');
   const [hits, setHits] = useState([]);
-  const [noHitMessage, setNoHitMessage] = useState('Loading...')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
     useEffect(() => {
       if (!query) {
@@ -17,7 +19,12 @@ function Search() {
       }
       fetchSearchResults(query)
         .then((results) => {
-          // Map the results to Hit components
+          if (results.length <= 0) {
+            setLoading(false)
+            setError('No Pages Found')
+            console.error('No Pages Found', results)
+          }
+
           const hitComponents = results.map((result, index) => (
             <Hit
               key={index}
@@ -27,9 +34,11 @@ function Search() {
             />
           ));
           setHits(hitComponents);
+          setLoading(false)
         })
         .catch((err) => {
-          setNoHitMessage('Error fetching results:')
+          setLoading(false)
+          setError('Error fetching results')
           console.error('Error fetching results:', err);
         });
     }, [query]);
@@ -40,18 +49,36 @@ function Search() {
         Crafter Engine
       </Typography>
       <SearchBar initialQuery={query}/>
-      <Typography variant="body1">
-        {query ? '' : 'No query parameter provided.'}
-      </Typography>
-      <Box marginTop='3vh'>
+      {!query && <Typography variant="body1">No query parameter provided</Typography>}
+      {!(loading || error) && <Box marginTop='3vh'>
         {hits.length > 0 ? hits.map((hit, index) => (
           <Box key={index} sx={{ mb: 2 }}>
             {hit}
           </Box>
         )) : (
-          <Typography>{noHitMessage}</Typography>
+          <Typography>{error}</Typography>
         )}
-      </Box>
+      </Box>}
+      {(loading || error) && <Box
+        sx={{
+          maxWidth: '100%',
+          marginTop: '30vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column'
+        }}
+      >
+        {(loading && !error) && <CircularProgress size={80} />}
+        {error && (
+          <>
+            <ErrorOutlineIcon color="error" sx={{ fontSize: 80 }} />
+            <Typography variant="h6" color="error" marginTop='2vh'>
+              {error}
+            </Typography>
+          </>
+        )}
+      </Box>}
     </Box>
   );
 }
