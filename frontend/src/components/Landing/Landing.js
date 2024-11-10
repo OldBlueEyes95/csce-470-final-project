@@ -11,7 +11,7 @@ function Landing() {
       <Typography variant="h4" fullWidth gutterBottom mb='3vh'>
         Crafter Engine
       </Typography>
-      <SearchBar />
+      <SearchBar initialQuery=''/>
     </Box>
   );
 }

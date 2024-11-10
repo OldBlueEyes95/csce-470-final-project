@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Box } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import Hit from '../Hit/Hit';
+import SearchBar from '../SearchBar/SearchBar';
 
 function Search() {
   const [searchParams] = useSearchParams();
@@ -13,7 +14,7 @@ function Search() {
     if (query) {
       // Replace this logic with an actual data fetching or processing function
       const simulatedHits = Array.from({ length: query.length }, (_, index) => (
-        <Hit key={index} content={`Hit ${index + 1} for query: ${query}`} />
+        <Hit key={index} title={`Hit ${index + 1}`} text={`Hit ${index + 1} for query: ${query}`} link={`https://minecraft.wiki/`} />
       ));
       setHits(simulatedHits);
     }
@@ -24,22 +25,19 @@ function Search() {
       <Typography variant="h4" gutterBottom>
         Search Result Page
       </Typography>
+      <SearchBar initialQuery={query}/>
       <Typography variant="body1">
-        {query ? (
-          <>
-            The query parameter is: <strong>{query}</strong>
-          </>
-        ) : (
-          'No query parameter provided.'
-        )}
+        {query ? '' : 'No query parameter provided.'}
       </Typography>
-      {hits.length > 0 ? hits.map((hit, index) => (
-        <Box key={index} sx={{ mb: 2 }}>
-          {hit}
-        </Box>
-      )) : (
-        <Typography>No results found.</Typography>
-      )}
+      <Box marginTop='3vh'>
+        {hits.length > 0 ? hits.map((hit, index) => (
+          <Box key={index} sx={{ mb: 2 }}>
+            {hit}
+          </Box>
+        )) : (
+          <Typography>No results found.</Typography>
+        )}
+      </Box>
     </Box>
   );
 }

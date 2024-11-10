@@ -2,8 +2,8 @@ import { Box, FormControl, IconButton, OutlinedInput } from '@mui/material';
 import React, { useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 
-function SearchBar() {
-  const [query, setQuery] = useState('')
+function SearchBar({ initialQuery }) {
+  const [query, setQuery] = useState(initialQuery)
   const queryDestLink = `/search?query=${query}`
   return (
     <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
