@@ -6,7 +6,7 @@ function Landing() {
 
   return (
     <Box 
-      sx={{ mt: '25vh', mb: 4}}
+      mt='25vh' mb='6vh'
     >
       <Typography variant="h4" fullWidth gutterBottom mb='3vh'>
         Crafter Engine

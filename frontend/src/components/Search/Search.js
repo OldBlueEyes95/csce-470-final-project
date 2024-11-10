@@ -22,8 +22,8 @@ function Search() {
 
   return (
     <Box sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Search Result Page
+      <Typography variant="h5" gutterBottom>
+        Crafter Engine
       </Typography>
       <SearchBar initialQuery={query}/>
       <Typography variant="body1">
