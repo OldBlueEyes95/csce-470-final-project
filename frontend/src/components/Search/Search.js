@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, CircularProgress } from '@mui/material';
+import { Typography, Box, CircularProgress, Paper } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import Hit from '../Hit/Hit';
 import SearchBar from '../SearchBar/SearchBar';
@@ -44,7 +44,15 @@ function Search() {
     }, [query]);
 
   return (
-    <Box sx={{ mt: 4 }}>
+    <Paper 
+      elevation={3} 
+      sx={{ 
+        borderRadius: 0, // Square edges
+        minHeight: '100vh', // Full page height
+        padding: 4, // Add padding to keep content from touching the edges
+        boxSizing: 'border-box' // Ensure padding doesn't affect height calculation
+      }}
+    >
       <Typography variant="h5" gutterBottom>
         Crafter Engine
       </Typography>
@@ -79,7 +87,7 @@ function Search() {
           </>
         )}
       </Box>}
-    </Box>
+    </Paper>
   );
 }
 
