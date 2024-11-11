@@ -11,3 +11,45 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/fonts/minecraft-font/MinecraftRegular-Bmg3.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/fonts/minecraft-font/MinecraftBold-nMK1.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/fonts/minecraft-font/MinecraftItalic-R8Mo.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/fonts/minecraft-font/MinecraftBoldItalic-1y1e.otf') format('opentype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'MinecraftEvenings';
+  src: url('/fonts/minecraft-evenings-font/MinecraftEvenings-lgvPd.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SgaSmoothRegular';
+  src: url('/fonts/sga-smooth-font/SgaSmoothRegular-DO0Y3.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

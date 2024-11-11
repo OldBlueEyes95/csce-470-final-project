@@ -7,10 +7,14 @@ import Landing from '../Landing/Landing'
 
 const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: 'dark',
     primary: {
       main: '#2ba143',
     },
+    // mode: 'light',
+    // primary: {
+    //   main: '#15622f',
+    // },
     secondary: {
       main: '#c74141',
     },

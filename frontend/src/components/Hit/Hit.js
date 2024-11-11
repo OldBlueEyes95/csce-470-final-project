@@ -1,14 +1,15 @@
 import React from 'react';
-import { Typography, Link, Box } from '@mui/material';
+import { Typography, Box, useTheme, Link } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 function Hit({ title, link, text }) {
+  const theme = useTheme();
   return (
     <Box 
       sx={{ 
         padding: '12px 16px', 
         borderBottom: '1px solid #e0e0e0',
-        '&:hover': { backgroundColor: '#f9f9f9' } 
+        '&:hover': { backgroundColor: theme.palette.action.hover } 
       }}
     >
       <Link 

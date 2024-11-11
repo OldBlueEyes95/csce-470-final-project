@@ -1,6 +1,6 @@
 {
-  "short_name": "Craft Searcher",
-  "name": "Craft Search Engine App",
+  "short_name": "Query Crafter",
+  "name": "Query Crafter Engine App",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

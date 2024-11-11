@@ -16,9 +16,9 @@ export async function fetchSearchResults(query) {
     // Test output
     // return [
     //   {
-    //     title: 'hithere',
-    //     text: 'mynameis',
-    //     link: 'www.google.com'
+    //     title: 'Google',
+    //     text: 'The Google search engine. This is a text preview.',
+    //     link: 'https://www.google.com'
     //   }
     // ];
   } catch (error) {
