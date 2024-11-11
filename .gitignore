@@ -5,3 +5,5 @@ __pycache__
 eval_data/foo.txt
 src/.venv/
 /src/.venv
+\src\.venv
+src\.venv
