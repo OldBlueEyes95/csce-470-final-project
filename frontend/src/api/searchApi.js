@@ -9,20 +9,11 @@ export async function fetchSearchResults(query) {
         q: query,
       },
     });
-
+    
     // list of objects in the required shape
-    return response.data;
-
-    // Test output
-    // return [
-    //   {
-    //     title: 'Google',
-    //     text: 'The Google search engine. This is a text preview.',
-    //     link: 'https://www.google.com'
-    //   }
-    // ];
+    return response.data.results;
   } catch (error) {
-    console.error('Error fetching search results:', error);
+    console.error('API Error while fetching search results:', error);
     throw error;
   }
 }

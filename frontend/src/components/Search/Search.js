@@ -37,9 +37,27 @@ function Search() {
           setLoading(false)
         })
         .catch((err) => {
-          setLoading(false)
-          setError('Error fetching results')
-          console.error('Error fetching results:', err);
+          setLoading(false);
+          
+          if (err.response) {
+            // Server responded with a status other than 200 range
+            if (err.response.status === 404) {
+              setError('No results found. Please try a different query.');
+            } else if (err.response.status >= 500) {
+              setError('Server error. Please try again later.');
+            } else {
+              setError('Unexpected error occurred. Please try again.');
+            }
+            console.error(`HTTP Error: ${err.response.status}`, err.response.data);
+          } else if (err.request) {
+            // Request was made but no response was received
+            setError('Network error. Please check your connection.');
+            console.error('Network Error:', err.request);
+          } else {
+            // Something else happened
+            setError('An unexpected error occurred. Please try again.');
+            console.error('Error:', err.message);
+          }
         });
     }, [query]);
 
