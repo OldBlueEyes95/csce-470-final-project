@@ -1,6 +1,5 @@
 import os
 import logging
-from typing import List
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -11,8 +10,7 @@ app = Flask(__name__)
 CORS(app)  # Enables CORS for all routes
 scoring.load_data()
 
-logging.basicConfig(level=logging.DEBUG) # logging
-
+logging.basicConfig(level=logging.DEBUG)  # logging
 
 @app.route('/search', methods=['GET'])
 def search():
@@ -50,7 +48,3 @@ def get_base_url():
     else:
         # Fallback for local development
         return jsonify({"base_url": "http://localhost:5000"})
-
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=False)
