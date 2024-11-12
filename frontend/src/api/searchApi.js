@@ -10,6 +10,8 @@ export async function fetchSearchResults(query) {
       },
     });
     
+    console.log('Full API Response:', response); // Debugging line
+    
     // list of objects in the required shape
     return response.data.results;
   } catch (error) {

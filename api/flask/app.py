@@ -20,7 +20,7 @@ def search():
     
     # Generate search results based on the query
     results = [
-        {'title': doc, 'text': "placeholder", 'link': "foobar"}
+        {'title': doc, 'text': f"`{doc}`", 'link': f"https://minecraft.wiki/w/Minecraft_Wiki:{doc}"}
         for doc, score in scoring.rank_documents(query)
     ]
     

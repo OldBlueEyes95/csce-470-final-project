@@ -24,6 +24,7 @@ function Search() {
             setLoading(false)
             setError('No Pages Found')
             console.error('No Pages Found', results)
+            return;
           }
 
           const hitComponents = results.map((result, index) => (
