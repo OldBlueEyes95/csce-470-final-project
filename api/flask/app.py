@@ -43,7 +43,13 @@ def search():
 
 @app.route('/api/base_url', methods=['GET'])
 def get_base_url():
-    return jsonify({"base_url": f"https://{os.environ['VERCEL_URL']}"})
+    vercel_url = os.environ.get('VERCEL_URL')
+    if vercel_url:
+        # If we're in Vercel, return the full backend URL
+        return jsonify({"base_url": f"https://{vercel_url}"})
+    else:
+        # Fallback for local development
+        return jsonify({"base_url": "http://localhost:5000"})
 
 
 if __name__ == "__main__":
