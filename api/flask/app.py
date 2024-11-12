@@ -41,5 +41,10 @@ def search():
         return jsonify({"error": "Internal server error"}), 500
 
 
+@app.route('/api/base_url', methods=['GET'])
+def get_base_url():
+    return jsonify({"base_url": f"https://{os.environ['VERCEL_URL']}"})
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=False)
