@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, CircularProgress } from '@mui/material';
-import { useSearchParams } from 'react-router-dom';
+import { Typography, Box, CircularProgress, Paper } from '@mui/material';
+import { Link, useSearchParams } from 'react-router-dom';
 import Hit from '../Hit/Hit';
 import SearchBar from '../SearchBar/SearchBar';
 import { fetchSearchResults } from '../../api/searchApi';
@@ -44,11 +44,22 @@ function Search() {
     }, [query]);
 
   return (
-    <Box sx={{ mt: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        Crafter Engine
-      </Typography>
-      <SearchBar initialQuery={query}/>
+    <Paper 
+      elevation={3} 
+      sx={{ 
+        borderRadius: 0, // Square edges
+        minHeight: '100vh', // Full page height
+        padding: 4, // Add padding to keep content from touching the edges
+        boxSizing: 'border-box' // Ensure padding doesn't affect height calculation
+      }}
+    >
+      <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Typography variant="h5" gutterBottom sx={{ fontFamily: 'MinecraftEvenings' }}>
+          <b>Q U E R Y&nbsp;&nbsp;&nbsp;C R A F T E R</b>
+        </Typography>
+      </Link>
+      <SearchBar initialQuery={query} />
+
       {!query && <Typography variant="body1">No query parameter provided</Typography>}
       {!(loading || error) && <Box marginTop='3vh'>
         {hits.length > 0 ? hits.map((hit, index) => (
@@ -79,7 +90,7 @@ function Search() {
           </>
         )}
       </Box>}
-    </Box>
+    </Paper>
   );
 }
 
