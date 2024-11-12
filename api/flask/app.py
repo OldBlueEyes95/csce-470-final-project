@@ -6,7 +6,8 @@ from flask_cors import CORS
 # from scoring import rank_documents, load_data
 import scoring
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='public')
+
 CORS(app)  # Enables CORS for all routes
 scoring.load_data()
 
