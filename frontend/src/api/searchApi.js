@@ -5,6 +5,8 @@ const BASE_URL = `https://${process.env.VERCEL_URL}${process.env.REACT_APP_API_B
 export async function fetchSearchResults(query) {
   console.log('Trying to request from:', `${BASE_URL}/search`);
   
+  console.log('Real URL', `https://${process.env.VERCEL_URL}${process.env.REACT_APP_API_BASE_URL}`);
+  
   try {
     const response = await axios.get(`${BASE_URL}/search`, {
       params: {
