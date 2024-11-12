@@ -7,3 +7,5 @@ src/.venv/
 /src/.venv
 \src\.venv
 src\.venv
+/api/.venv
+/src/.venv
