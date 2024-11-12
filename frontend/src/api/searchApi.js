@@ -6,6 +6,7 @@ let BASE_URL = '';  // Initialize an empty URL
 async function fetchBaseUrl() {
   try {
     const response = await axios.get('/api/base_url');
+    console.log('Base URL response:', response);
     BASE_URL = response.data.base_url;  // Set the base URL dynamically
     console.log('Fetched Base URL:', BASE_URL);
   } catch (error) {
