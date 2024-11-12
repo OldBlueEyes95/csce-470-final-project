@@ -19,7 +19,8 @@ function Search() {
       }
       fetchSearchResults(query)
         .then((results) => {
-          if (results.length <= 0) {
+          console.log("API response:", results); // Debugging line
+          if (!results || results.length <= 0) {
             setLoading(false)
             setError('No Pages Found')
             console.error('No Pages Found', results)
