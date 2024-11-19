@@ -1,17 +1,29 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "api/flask/app.py",
-        "use": "@vercel/python"
-      },
-      {
-        "src": "frontend/build/**",
-        "use": "@vercel/static"
+  "version": 2,
+  "builds": [
+    {
+      "src": "frontend/api/app.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb"
       }
-    ],
-    "rewrites": [
-      { "source": "/api/:path*", "destination": "/api/app.py" }
-    ]
-  }
-  
+    },
+    {
+      "src": "frontend/**",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "frontend/build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "frontend/api/app.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1"
+    }
+  ]
+}
