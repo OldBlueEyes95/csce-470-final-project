@@ -10,3 +10,4 @@ src\.venv
 /api/.venv
 /src/.venv
 /api/flask/.venv
+/frontend/api/.venv

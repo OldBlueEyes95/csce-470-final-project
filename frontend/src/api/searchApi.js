@@ -25,9 +25,9 @@ export async function fetchSearchResults(query) {
   console.log('Using API Base URL:', BASE_URL);
   
   try {
-    console.log('Trying to request from:', `${BASE_URL}/search`);
+    console.log('Trying to request from:', `${BASE_URL}/api/search`);
     
-    const response = await axios.get(`${BASE_URL}/search`, {
+    const response = await axios.get(`${BASE_URL}/api/search`, {
       params: {
         q: query,
       },
