@@ -1,0 +1,8 @@
+```json
+"routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/api/app.py"
+      }
+    ],
+```
