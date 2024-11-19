@@ -10,8 +10,8 @@ function Search() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query');
   const [hits, setHits] = useState([]);
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
     useEffect(() => {
       if (!query) {
@@ -21,9 +21,9 @@ function Search() {
         .then((results) => {
           console.log("API response:", results); // Debugging line
           if (!results || results.length <= 0) {
-            setLoading(false)
-            setError('No Pages Found')
-            console.error('No Pages Found', results)
+            setLoading(false);
+            setError('No Pages Found');
+            console.error('No Pages Found', results);
             return;
           }
 
@@ -36,7 +36,7 @@ function Search() {
             />
           ));
           setHits(hitComponents);
-          setLoading(false)
+          setLoading(false);
         })
         .catch((err) => {
           setLoading(false);
