@@ -13,7 +13,7 @@ scoring.load_data()
 
 logging.basicConfig(level=logging.DEBUG)  # logging
 
-@app.route('/search', methods=['GET'])
+@app.route('/api/search', methods=['GET'])
 def search():
     try:
         # Retrieve query parameter
