@@ -4,12 +4,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 # from scoring import rank_documents, load_data
-import api.scoring
+from scoring import load_data, rank_documents
 
 app = Flask(__name__, static_folder='public')
 
 CORS(app)  # Enables CORS for all routes
-scoring.load_data()
+load_data()
 
 logging.basicConfig(level=logging.DEBUG)  # logging
 
@@ -25,7 +25,7 @@ def search():
         # Process the query and generate search results
         results = [
             {'title': doc, 'text': f"`{doc}`", 'link': f"https://minecraft.wiki/w/{doc}"}
-            for doc, score in scoring.rank_documents(query)
+            for doc, score in rank_documents(query)
         ]
         
         if not results:
