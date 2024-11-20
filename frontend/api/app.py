@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 # from scoring import rank_documents, load_data
-import scoring
+import api.scoring
 
 app = Flask(__name__, static_folder='public')
 
