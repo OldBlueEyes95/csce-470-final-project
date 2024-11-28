@@ -1,0 +1,16 @@
+{
+    "short_name": "QueryCrafter",
+    "name": "Query Crafter",
+    "description": "CSCE 470 Final Project",
+    "icons": [
+    {
+        "src": "icons/minecraft_title_square.png",
+        "type": "image/png",
+        "sizes": "192x192"
+    }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#1d5720",
+    "background_color": "#251f1a"
+}

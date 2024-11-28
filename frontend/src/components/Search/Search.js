@@ -10,8 +10,8 @@ function Search() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query');
   const [hits, setHits] = useState([]);
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
     useEffect(() => {
       if (!query) {
@@ -19,10 +19,12 @@ function Search() {
       }
       fetchSearchResults(query)
         .then((results) => {
-          if (results.length <= 0) {
-            setLoading(false)
-            setError('No Pages Found')
-            console.error('No Pages Found', results)
+          console.log("API response:", results); // Debugging line
+          if (!results || results.length <= 0) {
+            setLoading(false);
+            setError('No Pages Found');
+            console.error('No Pages Found', results);
+            return;
           }
 
           const hitComponents = results.map((result, index) => (
@@ -34,12 +36,30 @@ function Search() {
             />
           ));
           setHits(hitComponents);
-          setLoading(false)
+          setLoading(false);
         })
         .catch((err) => {
-          setLoading(false)
-          setError('Error fetching results')
-          console.error('Error fetching results:', err);
+          setLoading(false);
+          
+          if (err.response) {
+            // Server responded with a status other than 200 range
+            if (err.response.status === 404) {
+              setError('No results found. Please try a different query.');
+            } else if (err.response.status >= 500) {
+              setError('Server error. Please try again later.');
+            } else {
+              setError('Unexpected error occurred. Please try again.');
+            }
+            console.error(`HTTP Error: ${err.response.status}`, err.response.data);
+          } else if (err.request) {
+            // Request was made but no response was received
+            setError('Network error. Please check your connection.');
+            console.error('Network Error:', err.request);
+          } else {
+            // Something else happened
+            setError('An unexpected error occurred. Please try again.');
+            console.error('Error:', err.message);
+          }
         });
     }, [query]);
 

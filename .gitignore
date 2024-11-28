@@ -3,3 +3,11 @@ data
 stats
 __pycache__
 eval_data/foo.txt
+src/.venv/
+/src/.venv
+\src\.venv
+src\.venv
+/api/.venv
+/src/.venv
+/api/flask/.venv
+/frontend/api/.venv

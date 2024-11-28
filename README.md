@@ -1,28 +1,25 @@
 # csce-470-final-project
 Shared final project for CSCE 470.
 
-# Setup
-To run our program you should have a valid Python 3 installation (Python 3.12 is the version used in testing). After this you should be able to run `install_dependencies.py` which should resolve the various Python dependencies so long as pip is also installed. 
+# Local Setup Guide
+To run our program you should have a valid Python 3 installation (Python 3.12 is the version used in testing) and valid up to date Node and NPM installations.
 
-# Running the Project
-To try the project for yourself, you can use `download.py` to import an XML file of the entire Minecraft Wiki; this file can then be indexed via `index.py` which is saved using in a serialized format. The core algorithm for the search tool itself is `scoring.py` which uses the pickled index to create its search results.
-1. `install_dependencies.py`
-2. `python download.py`
-3. `python index.py`
-4. `python simple_searcher.py`
+## Frontend Setup
+The working directory for the frontend is `frontend/`.
 
-We have some an evaluation module that uses NDCG and MAP to evaluate performance using a set of test queries.
-1. `python evaluation.py`
+1. Run `npm install` to collect the JS dependencies.
+2. Run `npm start` to run the frontend.
 
-## Project Dependencies
+## Backend Setup
+The working directory for the backend is `frontend/api/`. Our recommendation is first to set up a Python virtual environment using `python -m venv .venv` (run using `.venv/Scripts/activate`).
 
-This python3 project has some pip package dependencies. 
+1. Install Python dependencies using `pip install -r requirements.txt`
+2. Run `install_dependencies.py` to ensure nltk data (such as it's stopwords collection) is downloaded.
+2. Run `download.py` to download our stable copy of the Minecraft wiki and generate the `data/` folder.
+3. Run `python index.py` to convert the wiki XML file into a useable index.
+4. Run `flask --app app.py run` to start up the backend.
 
-- `pandas` - Data manipulation and analysis.
-- `bs4` (BeautifulSoup) - HTML and XML parsing.
-- `nltk` - Natural language processing.
-- `requests` - HTTP requests for web content access.
-- `lxml` - XML and HTML parsing with enhanced performance.
-- `matplotlib` - Data visualization.
+After this you should be able to run `install_dependencies.py` which should resolve the various Python dependencies so long as pip is also installed. 
 
-We do have a script that will install these dependencies and more: `install_dependencies.py`. NLTK has some data of its own that must be downloaded, and this script will fetch those as well.
+# Evaluation
+Assuming the setup steps have been done for the backend, you can run `evaluation.py` (currently set to use the quicker test function) in the backend working directory. 

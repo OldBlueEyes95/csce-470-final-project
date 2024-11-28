@@ -186,4 +186,7 @@ if __name__ == '__main__':
     
     # query_files: List[str] = os.listdir(EVAL_PATH)
     
-    evaluate()
+    test()
+    
+    # evaluate()
+    
